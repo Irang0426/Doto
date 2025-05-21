@@ -16,17 +16,15 @@ Doto는 Spring Boot, JPA, MySQL, Thymeleaf를 기반으로 개발된 간단한 *
 | **Spring Boot DevTools** | 개발 편의성 향상 |
 | **Validation** | 입력값 유효성 검증 |
 
-## ⚙️ 프로젝트 구조
+## 📁 프로젝트 디렉토리 구조
 
-doto
-├── controller # 웹 요청 처리
-├── service # 비즈니스 로직
-├── repository # 데이터베이스 접근 (JPA)
-├── domain # Entity 클래스
-├── dto # 요청/응답 데이터 전송 객체
-├── templates # Thymeleaf HTML 파일
-└── static # CSS, JS 등 정적 자원
-
+- `controller` : 웹 요청을 처리하는 컨트롤러 클래스 (예: `TodoController`)
+- `service` : 비즈니스 로직을 담당하는 서비스 클래스 (예: `TodoService`)
+- `repository` : 데이터베이스 접근을 담당하는 JPA 인터페이스 (예: `TodoRepository`)
+- `domain` : 엔티티 클래스가 위치한 디렉토리 (예: `Todo`)
+- `dto` : 요청(Request) 및 응답(Response) 데이터 객체를 담는 클래스
+- `templates` : Thymeleaf 기반 HTML 뷰 파일들이 위치하는 디렉토리
+- `static` : CSS, JS, 이미지 등의 정적 자원 파일들이 위치하는 디렉토리
 
 ## 💾 요구 사항
 
