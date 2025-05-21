@@ -29,5 +29,5 @@ Doto는 Spring Boot, JPA, MySQL, Thymeleaf를 기반으로 개발된 간단한 *
 ## 💾 요구 사항
 
 - Java 17+
-- Gradle or Maven
+- Gradle
 - MySQL 8.x
