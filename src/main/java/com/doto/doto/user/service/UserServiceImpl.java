@@ -3,7 +3,7 @@ package com.doto.doto.user.service;
 import com.doto.doto.user.dto.UserDTO;
 import com.doto.doto.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
+import com.doto.doto.user.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+
   @Override
   public UserDTO register(UserDTO userDTO) {
     User user = User.builder()
