@@ -10,6 +10,9 @@
   <h2 th:text="${todo.id != null} ? '할 일 수정' : '새 할 일 추가'" class="mb-4">할 일</h2>
 
   <form th:action="${todo.id != null} ? @{'/todo/todos/' + ${todo.id}} : @{/todo/todos}" method="post">
+    <input type="hidden" name="userId" th:value="${todo.userId}" class="form-control" required>
+    <input type="date" name="startDate" th:value="${todo.startDate}" class="form-control" required />
+
     <div class="mb-3">
       <label for="title" class="form-label">제목</label>
       <input type="text" id="title" name="title" th:value="${todo.title}" class="form-control" required>
@@ -34,9 +37,10 @@
       <label class="form-check-label" for="completed">완료 여부</label>
     </div>
 
+    <input type="hidden" name="redirect" th:value="${param.redirect}" />
     <button type="submit" class="btn btn-success">저장</button>
-    <a th:href="@{/todos}" class="btn btn-outline-secondary">목록으로</a>
   </form>
+  <a th:href="@{/todos}" class="btn btn-outline-secondary">목록으로</a>
 </div>
 </body>
 </html>
