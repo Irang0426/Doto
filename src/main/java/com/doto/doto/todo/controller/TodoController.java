@@ -1,8 +1,10 @@
 package com.doto.doto.todo.controller;
 
+import com.doto.doto.security.CustomUserDetails;
 import com.doto.doto.todo.dto.TodoDTO;
 import com.doto.doto.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +19,15 @@ public class TodoController {
   private final TodoService todoService;
 
   @GetMapping("/new")
-  public String showForm(@RequestParam(value = "date", required = false) String date, Model model) {
+  public String showForm(@RequestParam(value = "date",required = false) String date,
+                         @AuthenticationPrincipal CustomUserDetails userDetails,
+                         Model model) {
     TodoDTO todo = new TodoDTO();
-    if (date != null && !date.isEmpty()) {
-      todo.setStartDate(LocalDate.parse(date));  // 날짜를 시작일로 세팅
+    if (date != null) {
+      todo.setStartDate(LocalDate.parse(date));
     }
+    // todo.setUserId(userDetails.getId()); // 로그인한 사용자 ID 주입
+    todo.setUserId(1L); // 임시
     model.addAttribute("todo", todo);
     return "todo/form";
   }
