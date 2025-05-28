@@ -25,7 +25,7 @@ public class SecurityConfig {
         )
         .formLogin(form -> form
             .loginPage("/login")             // 커스텀 로그인 페이지
-            .defaultSuccessUrl("todo/todos", true)  // 로그인 성공 후 리다이렉트
+            .defaultSuccessUrl("/todo/todos", true)  // 로그인 성공 후 리다이렉트
             .permitAll()
         )
         .logout(logout -> logout
