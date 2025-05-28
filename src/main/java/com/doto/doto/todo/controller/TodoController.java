@@ -23,8 +23,8 @@ public class TodoController {
                          @AuthenticationPrincipal CustomUserDetails userDetails,
                          Model model) {
     TodoDTO todo = new TodoDTO();
-    if (date != null) {
-      todo.setStartDate(LocalDate.parse(date));
+    if (date == null || date.isEmpty()) {
+      date = LocalDate.now().toString();  // 오늘 날짜를 기본값으로
     }
     // todo.setUserId(userDetails.getId()); // 로그인한 사용자 ID 주입
     todo.setUserId(1L); // 임시
@@ -33,8 +33,11 @@ public class TodoController {
   }
 
   @PostMapping("/todos")
-  public String create(@ModelAttribute TodoDTO todoDTO) {
+  public String create(@ModelAttribute TodoDTO todoDTO, @RequestParam(value = "redirect", required = false) String redirectUrl) {
     todoService.save(todoDTO);
+    if (redirectUrl != null && !redirectUrl.isEmpty()) {
+      return "redirect:" + redirectUrl;
+    }
     return "redirect:/todo/todos";
   }
 

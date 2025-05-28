@@ -24,7 +24,7 @@
       dateClick: function(info) {
         // 클릭한 날짜로 이동
         const clickedDate = info.dateStr;  // YYYY-MM-DD
-        window.location.href = '/todo/new?date=' + clickedDate;
+        window.location.href = '/todo/new?date=' + clickedDate + '&redirect=/todo/calendar';
       }
     });
     calendar.render();

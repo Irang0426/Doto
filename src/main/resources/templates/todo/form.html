@@ -37,6 +37,7 @@
       <label class="form-check-label" for="completed">완료 여부</label>
     </div>
 
+    <input type="hidden" name="redirect" th:value="${param.redirect}" />
     <button type="submit" class="btn btn-success">저장</button>
   </form>
   <a th:href="@{/todos}" class="btn btn-outline-secondary">목록으로</a>
