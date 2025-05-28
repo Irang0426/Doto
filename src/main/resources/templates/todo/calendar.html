@@ -22,20 +22,9 @@
         // 필요하면 모달창으로 상세/수정 처리
       },
       dateClick: function(info) {
-        var title = prompt('새 할 일 제목을 입력하세요');
-        if (title) {
-          fetch('/todo/create', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              title: title,
-              startDate: info.dateStr,
-              endDate: info.dateStr,
-              completed: 0,
-              isDelete: 0
-            })
-          }).then(() => calendar.refetchEvents());
-        }
+        // 클릭한 날짜로 이동
+        const clickedDate = info.dateStr;  // YYYY-MM-DD
+        window.location.href = '/todo/new?date=' + clickedDate;
       }
     });
     calendar.render();
