@@ -1,17 +1,20 @@
 package com.doto.doto.user.service;
 
 import com.doto.doto.user.dto.UserDTO;
+import com.doto.doto.user.enums.Grade;
 import com.doto.doto.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import com.doto.doto.user.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
@@ -23,7 +26,7 @@ public class UserServiceImpl implements UserService {
         .password(passwordEncoder.encode(userDTO.getPassword()))
         .nickname(userDTO.getNickname())
         .username(userDTO.getUsername())
-        .grade(userDTO.getGrade())
+        .grade(userDTO.getGrade() != null ? userDTO.getGrade() : Grade.BASIC)
         .build();
 
     User saved = userRepository.save(user);
@@ -39,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDTO findById(Long id) {
-    com.doto.doto.user.entity.User user = userRepository.findById(id)
+    User user = userRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
     return toDto(user);
   }
