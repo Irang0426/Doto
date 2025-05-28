@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang=ko>
+<head>
+  <meta charset="UTF-8">
+  <title>Calendar</title>
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <!-- FullCalendar JS -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+</head>
+<body>
+<div id="calendar"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      events: '/api/todos',  // GET 요청으로 JSON 이벤트 받아옴
+      eventClick: function(info) {
+        alert('To-Do 제목: ' + info.event.title);
+        // 필요하면 모달창으로 상세/수정 처리
+      },
+      dateClick: function(info) {
+        var title = prompt('새 할 일 제목을 입력하세요');
+        if (title) {
+          fetch('/todo/create', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              title: title,
+              startDate: info.dateStr,
+              endDate: info.dateStr,
+              completed: 0,
+              isDelete: 0
+            })
+          }).then(() => calendar.refetchEvents());
+        }
+      }
+    });
+    calendar.render();
+  });
+</script>
+</body>
+</html>

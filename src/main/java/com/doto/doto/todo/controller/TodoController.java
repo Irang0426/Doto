@@ -34,4 +34,10 @@ public class TodoController {
     model.addAttribute("todos", todoService.findAll());
     return "todo/todos";
   }
+
+  @GetMapping("/calendar")
+  public String calendar(Model model) {
+    model.addAttribute("todos", todoService.findAll());
+    return "todo/calendar";
+  }
 }
