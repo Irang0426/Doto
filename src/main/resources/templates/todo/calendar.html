@@ -16,7 +16,7 @@
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
-      events: '/api/todos',  // GET 요청으로 JSON 이벤트 받아옴
+      events: '/todo/calendar',  // GET 요청으로 JSON 이벤트 받아옴
       eventClick: function(info) {
         alert('To-Do 제목: ' + info.event.title);
         // 필요하면 모달창으로 상세/수정 처리
