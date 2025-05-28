@@ -20,12 +20,12 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable()) // 개발 시 편의를 위해 임시 비활성화, 운영 시 활성화 권장
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll()
+            .requestMatchers("/login", "/user/register", "/css/**", "/js/**", "/images/**").permitAll()
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
             .loginPage("/login")             // 커스텀 로그인 페이지
-            .defaultSuccessUrl("/todo/todos", true)  // 로그인 성공 후 리다이렉트
+            .defaultSuccessUrl("/todo/calendar", true)  // 로그인 성공 후 리다이렉트
             .permitAll()
         )
         .logout(logout -> logout
