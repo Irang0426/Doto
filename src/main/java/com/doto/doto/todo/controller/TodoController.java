@@ -26,6 +26,9 @@ public class TodoController {
     if (date == null || date.isEmpty()) {
       date = LocalDate.now().toString();  // 오늘 날짜를 기본값으로
     }
+
+    LocalDate startDate = LocalDate.parse(date);
+    todo.setStartDate(startDate);
     // todo.setUserId(userDetails.getId()); // 로그인한 사용자 ID 주입
     todo.setUserId(1L); // 임시
     model.addAttribute("todo", todo);
