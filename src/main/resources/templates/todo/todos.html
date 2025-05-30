@@ -9,6 +9,8 @@
 <div class="container py-5">
   <h2 class="mb-4">📝 나의 할 일 목록</h2>
   <a href="/todo/new" class="btn btn-primary mb-3">+ 새 할 일 추가</a>
+  <a th:href="@{/todo/trash}" class="btn btn-outline-danger mb-3">🗑 휴지통</a>
+
 
   <table class="table table-hover bg-white shadow-sm rounded">
     <thead class="table-dark">
@@ -30,8 +32,8 @@
         <span th:if="${todo.completed == 0}" class="badge bg-secondary">미완료</span>
       </td>
       <td>
-        <a th:href="@{'/todos/' + ${todo.id} + '/edit'}" class="btn btn-sm btn-outline-secondary">수정</a>
-        <form th:action="@{'/todos/' + ${todo.id} + '/delete'}" method="post" class="d-inline">
+        <a th:href="@{'/todo/todos/' + ${todo.id} + '/edit'}" class="btn btn-sm btn-outline-secondary">수정</a>
+        <form th:action="@{'/todo/todos/' + ${todo.id} + '/softDelete'}" method="post" class="d-inline">
           <button type="submit" class="btn btn-sm btn-outline-danger">삭제</button>
         </form>
       </td>

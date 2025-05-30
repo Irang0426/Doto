@@ -52,9 +52,12 @@ public class Todo {
   @Convert(converter = PriorityConverter.class)
   private Priority priority;
 
-  private Integer completed;   // 0: 미완료, 1: 완료
+  @Builder.Default
+  private Integer completed = 0;   // 0: 미완료, 1: 완료
 
-  private Integer isDelete;    // 0: 사용, 1: 삭제
+  @Builder.Default
+  @Column(nullable = false, name = "is_delete")
+  private Integer isDelete = 0;    // 0: 사용, 1: 삭제
 
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
@@ -63,4 +66,15 @@ public class Todo {
   @LastModifiedDate
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
+
+  // 가본값 세팅
+  @PrePersist
+  public void prePersist() {
+    if (isDelete == null) {
+      isDelete = 0;
+    }
+    if (completed == null) {
+      completed = 0;
+    }
+  }
 }

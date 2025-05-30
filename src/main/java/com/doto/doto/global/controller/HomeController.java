@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController {
   @GetMapping("/")
-  public String index() {
+  public String index(@RequestParam(value = "logout", required = false) String logout, Model model) {
+    if (logout != null) {
+      model.addAttribute("message", "로그아웃 되었습니다.");
+    }
     return "index";
-  };
+  }
 
   @GetMapping("/login")
   public String login(@RequestParam(value = "error", required = false) String error, Model model) {

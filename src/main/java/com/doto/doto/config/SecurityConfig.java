@@ -33,7 +33,10 @@ public class SecurityConfig {
         )
         .logout(logout -> logout
             .logoutUrl("/logout")
-            .logoutSuccessUrl("/login?logout")
+            .logoutSuccessUrl("/?logout")  // 로그아웃 홈으로 리다이렉트
+            .invalidateHttpSession(true)        // 세션 무효화
+            .deleteCookies("JSESSIONID")        // 인증 세션 쿠키 제거
+            .clearAuthentication(true)          // 인증 정보 제거
             .permitAll()
         )
         .userDetailsService(userDetailsService);
