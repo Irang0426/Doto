@@ -7,6 +7,7 @@ import com.doto.doto.user.entity.User;
 import com.doto.doto.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class TodoServiceImpl implements TodoService {
   @Override
   public List<TodoDTO> findAll() {
     return todoRepository.findAll().stream()
-        .filter(todo -> todo.getIsDelete() != 1) // 삭제되지 않은 것만 보여줌
+        .filter(todo -> todo.getIsDelete() == null || todo.getIsDelete() != 1) // null 방어
         .map(todo -> TodoDTO.builder()
             .id(todo.getId())
             .title(todo.getTitle())
@@ -31,10 +32,12 @@ public class TodoServiceImpl implements TodoService {
             .completed(todo.getCompleted())
             .startDate(todo.getStartDate())
             .endDate(todo.getEndDate())
-            .userId(todo.getUser().getId())
+            .userId(todo.getUser() != null ? todo.getUser().getId() : null)
             .build())
         .collect(Collectors.toList());
   }
+
+
 
   // 소프트삭제한 목록 리스트 -> is_delete = 1
   @Override
@@ -57,14 +60,26 @@ public class TodoServiceImpl implements TodoService {
   @Override
   public TodoDTO findById(Long id) {
     Todo todo = todoRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("할 일을 찾을 수 없습니다."));
+        .orElseThrow(() -> new IllegalArgumentException("해당 ID의 할 일이 존재하지 않습니다."));
+
+    // 삭제된 항목이면 예외 처리하거나 무시할 수 있음
+    if (todo.getIsDelete() != null && todo.getIsDelete() == 1) {
+      throw new IllegalStateException("삭제된 할 일입니다.");
+    }
+
     return TodoDTO.builder()
         .id(todo.getId())
         .title(todo.getTitle())
         .content(todo.getContent())
+        .priority(todo.getPriority())
+        .completed(todo.getCompleted())
         .startDate(todo.getStartDate())
+        .endDate(todo.getEndDate())
+        .userId(todo.getUser() != null ? todo.getUser().getId() : null)
         .build();
   }
+
+
 
   @Override
   public TodoDTO save(TodoDTO dto) {
@@ -151,5 +166,13 @@ public class TodoServiceImpl implements TodoService {
         .orElseThrow(() -> new RuntimeException("할 일을 찾을 수 없습니다."));
     todoRepository.delete(todo);  // 완전 삭제
   }
+
+  @Transactional
+  @Override
+  public void deleteAllInTrash() {
+    List<Todo> deletedTodos = todoRepository.findByIsDelete(1); // isDelete가 1인 것들만 조회
+    todoRepository.deleteAllByIsDelete(1);
+  }
+
 
 }

@@ -13,4 +13,5 @@ public interface TodoService {
   void softdelete(Long id);
   void restore(Long id);
   void delete(Long id);
+  void deleteAllInTrash();
 }

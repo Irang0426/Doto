@@ -8,11 +8,14 @@
 <body class="bg-light">
 <div class="container py-5">
   <h2 class="mb-4">📝 나의 할 일 목록</h2>
-  <a href="/todo/new" class="btn btn-primary mb-3">+ 새 할 일 추가</a>
+  <a th:href="@{/todo/new}" class="btn btn-primary mb-3">+ 새 할 일 추가</a>
   <a th:href="@{/todo/trash}" class="btn btn-outline-danger mb-3">🗑 휴지통</a>
 
+  <div th:if="${#lists.isEmpty(todos)}" class="alert alert-info">
+    현재 등록된 할 일이 없습니다. 새 할 일을 추가해보세요!
+  </div>
 
-  <table class="table table-hover bg-white shadow-sm rounded">
+  <table th:if="${!#lists.isEmpty(todos)}" class="table table-hover bg-white shadow-sm rounded">
     <thead class="table-dark">
     <tr>
       <th>제목</th>

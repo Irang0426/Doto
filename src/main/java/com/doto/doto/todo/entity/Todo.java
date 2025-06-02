@@ -40,19 +40,23 @@ public class Todo {
 
   private LocalDate startDate;
 
+  @Column(nullable = true)
   private LocalDate endDate;
 
   private LocalTime startTime;
 
+  @Builder.Default
   @Enumerated(EnumType.STRING)
-  private RepeatType repeatType;
+  private RepeatType repeatType = RepeatType.NONE;
 
+  @Column(nullable = true)
   private LocalDate repeatEndDate;
 
   @Convert(converter = PriorityConverter.class)
   private Priority priority;
 
   @Builder.Default
+  @Column(nullable = false)
   private Integer completed = 0;   // 0: 미완료, 1: 완료
 
   @Builder.Default
@@ -75,6 +79,9 @@ public class Todo {
     }
     if (completed == null) {
       completed = 0;
+    }
+    if (repeatType == null) {
+      repeatType = RepeatType.NONE;
     }
   }
 }

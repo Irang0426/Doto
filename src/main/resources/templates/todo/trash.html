@@ -11,6 +11,13 @@
   <h2 class="mb-4">🗑️ 휴지통</h2>
 
   <a th:href="@{/todo/todos}" class="btn btn-outline-secondary mb-3">← 할 일 목록으로</a>
+  <form th:action="@{/todo/todos/deleteAll}" method="post" style="display: inline;">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <button type="submit" class="btn btn-outline-danger mb-3 ms-2"
+            onclick="return confirm('정말 모든 항목을 영구 삭제하시겠습니까?');">
+      🧹 전체 삭제
+    </button>
+  </form>
 
   <table class="table table-bordered bg-white shadow-sm rounded">
     <thead class="table-danger">

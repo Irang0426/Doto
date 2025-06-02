@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
   List<Todo> findByIsDelete(Integer isDelete);
+  void deleteAllByIsDelete(Integer isDelete);
+
+
 
 }

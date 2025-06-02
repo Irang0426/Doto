@@ -32,8 +32,7 @@ public class TodoController {
 
     LocalDate startDate = LocalDate.parse(date);
     todo.setStartDate(startDate);
-    // todo.setUserId(userDetails.getId()); // 로그인한 사용자 ID 주입
-    todo.setUserId(1L); // 임시
+    todo.setUserId(userDetails.getUser().getId()); // 로그인한 사용자 ID 주입
     model.addAttribute("todo", todo);
     model.addAttribute("startDateString", startDate.toString());
     return "todo/form";
@@ -69,7 +68,6 @@ public class TodoController {
     } else {
       model.addAttribute("startDateString", "");
     }
-
     return "todo/form";
   }
 
@@ -85,7 +83,6 @@ public class TodoController {
     todoService.update(id, todoDTO);
     return "redirect:/todo/todos";
   }
-
 
 
   // 삭제한 목록
@@ -113,6 +110,13 @@ public class TodoController {
   @PostMapping("/todos/{id}/delete")
   public String delete(@PathVariable Long id) {
     todoService.delete(id);
+    return "redirect:/todo/trash";
+  }
+
+  // 전체 삭제
+  @PostMapping("/todos/deleteAll")
+  public String deleteAllInTrash() {
+    todoService.deleteAllInTrash();
     return "redirect:/todo/trash";
   }
 
