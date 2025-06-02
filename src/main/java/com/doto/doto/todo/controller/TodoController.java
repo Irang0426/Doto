@@ -41,16 +41,21 @@ public class TodoController {
 
   // 할 일 추가
   @PostMapping("/todos")
-  public String create(@ModelAttribute TodoDTO todoDTO, @RequestParam(value = "redirect", required = false) String redirectUrl) {
-    if (todoDTO.getCompleted() == null) {
-      todoDTO.setCompleted(0); // 체크되지 않았으면 0
-    }
+  public String create(@ModelAttribute TodoDTO todoDTO,
+                       @RequestParam(value = "completed", required = false) String completedStr,
+                       @RequestParam(value = "redirect", required = false) String redirectUrl) {
+
+    int completed = "1".equals(completedStr) ? 1 : 0;
+    todoDTO.setCompleted(completed);
+
     todoService.save(todoDTO);
-    if (redirectUrl != null && !redirectUrl.isEmpty()) {
-      return "redirect:" + redirectUrl;
-    }
-    return "redirect:/todo/todos";
+
+    return (redirectUrl != null && !redirectUrl.isEmpty())
+        ? "redirect:" + redirectUrl
+        : "redirect:/todo/todos";
   }
+
+
 
   // 할 일 수정 폼 보여주기
   @GetMapping("/todos/{id}/edit")
@@ -70,13 +75,18 @@ public class TodoController {
 
   // 할 일 수정 처리
   @PostMapping("/todos/{id}/edit")
-  public String update(@PathVariable Long id, @ModelAttribute TodoDTO todoDTO) {
-    if (todoDTO.getCompleted() == null) {
-      todoDTO.setCompleted(0); // 체크 안 됐을 때
-    }
+  public String update(@PathVariable Long id,
+                       @ModelAttribute TodoDTO todoDTO,
+                       @RequestParam(value = "completed", required = false) String completedStr) {
+
+    int completed = "1".equals(completedStr) ? 1 : 0;
+    todoDTO.setCompleted(completed);
+
     todoService.update(id, todoDTO);
     return "redirect:/todo/todos";
   }
+
+
 
   // 삭제한 목록
   @GetMapping("/trash")
@@ -119,18 +129,5 @@ public class TodoController {
     model.addAttribute("todos", todoService.findAll());
     return "todo/calendar";
   }
-
-  @InitBinder
-  public void initBinder(WebDataBinder binder) {
-    binder.registerCustomEditor(Integer.class, "completed", new PropertyEditorSupport() {
-      @Override
-      public void setAsText(String text) {
-        setValue("1".equals(text) ? 1 : 0);
-      }
-    });
-  }
-
-
-
 
 }

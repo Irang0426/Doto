@@ -28,7 +28,7 @@ public class SecurityConfig {
             .usernameParameter("email")
             .passwordParameter("password")
             .failureUrl("/login?error")
-            .defaultSuccessUrl("/todo/calendar", true)  // 로그인 성공 후 리다이렉트
+            .defaultSuccessUrl("/todo/todos", true)  // 로그인 성공 후 리다이렉트
             .permitAll()
         )
         .logout(logout -> logout

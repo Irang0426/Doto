@@ -82,8 +82,8 @@ public class TodoServiceImpl implements TodoService {
             .startDate(dto.getStartDate())
             .endDate(dto.getEndDate())
             .priority(dto.getPriority())
-            .completed(dto.getCompleted())
-            .isDelete(dto.getIsDelete())
+            .completed(completed)
+            .isDelete(isDelete)
             .build();
 
     Todo saved = todoRepository.save(todo);
@@ -107,8 +107,8 @@ public class TodoServiceImpl implements TodoService {
     todo.setStartDate(dto.getStartDate());
     todo.setEndDate(dto.getEndDate());
     todo.setPriority(dto.getPriority());
-    todo.setCompleted(dto.getCompleted() != null ? dto.getCompleted() : 0);
-    todo.setIsDelete(dto.getIsDelete() != null ? dto.getIsDelete() : 0);
+    todo.setCompleted(dto.getCompleted());
+    todo.setIsDelete(dto.getIsDelete());
 
     Todo updated = todoRepository.save(todo);
 
