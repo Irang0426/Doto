@@ -23,18 +23,19 @@ public class TodoServiceImpl implements TodoService {
   @Override
   public List<TodoDTO> findAll() {
     return todoRepository.findAll().stream()
-        .filter(todo -> todo.getIsDelete() == null || todo.getIsDelete() != 1) // null 방어
-        .map(todo -> TodoDTO.builder()
-            .id(todo.getId())
-            .title(todo.getTitle())
-            .content(todo.getContent())
-            .priority(todo.getPriority())
-            .completed(todo.getCompleted())
-            .startDate(todo.getStartDate())
-            .endDate(todo.getEndDate())
-            .userId(todo.getUser() != null ? todo.getUser().getId() : null)
-            .build())
-        .collect(Collectors.toList());
+            .filter(todo -> todo.getIsDelete() == null || todo.getIsDelete() != 1) // null 방어
+            .map(todo -> TodoDTO.builder()
+                    .id(todo.getId())
+                    .title(todo.getTitle())
+                    .content(todo.getContent())
+                    .priority(todo.getPriority())
+                    .completed(todo.getCompleted())
+                    .startDate(todo.getStartDate())
+                    .endDate(todo.getEndDate())
+                    .userId(todo.getUser() != null ? todo.getUser().getId() : null)
+                    .isDelete(todo.getIsDelete())
+                    .build())
+            .collect(Collectors.toList());
   }
 
 

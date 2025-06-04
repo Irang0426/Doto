@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -132,6 +134,33 @@ public class TodoController {
   public String calendar(Model model) {
     model.addAttribute("todos", todoService.findAll());
     return "todo/calendar";
+  }
+
+  @GetMapping("/calendar/events")
+  @ResponseBody
+  public List<Map<String, Object>> getCalendarEvents(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    Long userId = userDetails.getUser().getId();
+
+    List<TodoDTO> todos = todoService.findAll().stream()
+            .filter(todo -> todo.getUserId() != null && todo.getUserId().equals(userId))
+            .filter(todo -> Integer.valueOf(0).equals(todo.getIsDelete()))
+            .filter(todo -> todo.getStartDate() != null)
+            .collect(Collectors.toList());
+
+    List<Map<String, Object>> events = new ArrayList<>();
+    for (TodoDTO todo : todos) {
+      Map<String, Object> event = new HashMap<>();
+      event.put("id", todo.getId());
+      event.put("title", todo.getTitle());
+      event.put("start", todo.getStartDate().toString());
+
+      if (todo.getEndDate() != null) {
+        event.put("end", todo.getEndDate().plusDays(1).toString());
+      }
+
+      events.add(event);
+    }
+    return events;
   }
 
 }

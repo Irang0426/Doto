@@ -35,5 +35,5 @@ public class TodoDTO {
 
   private Integer completed;
 
-  private Integer isDelete;
+  private Integer isDelete = 0;
 }
